@@ -5,7 +5,12 @@ import Dashboard from '../../pages/Dashboard';
 import ThreatMonitor from '../../pages/ThreatMonitor';
 import DevicesPage from '../../pages/DevicesPage';
 import MLModels from '../../pages/MLModels';
-import ComingSoon from '../../pages/ComingSoon';
+import Collaboration from '../../pages/Collaboration';
+import ThreatIntelligence from '../../pages/ThreatIntelligence';
+import Authentication from '../../pages/Authentication';
+import UserManagement from '../../pages/UserManagement';
+import Compliance from '../../pages/Compliance';
+import Settings from '../../pages/Settings';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,8 +34,20 @@ const Layout: React.FC<LayoutProps> = () => {
         return <DevicesPage />;
       case 'ml-models':
         return <MLModels />;
+      case 'collaboration':
+        return <Collaboration />;
+      case 'intelligence':
+        return <ThreatIntelligence />;
+      case 'authentication':
+        return <Authentication />;
+      case 'users':
+        return <UserManagement />;
+      case 'compliance':
+        return <Compliance />;
+      case 'settings':
+        return <Settings />;
       default:
-        return <ComingSoon pageName={activeTab} />;
+        return <Dashboard />;
     }
   };
 

@@ -11,6 +11,7 @@ import AttackTypeChart from '../components/Dashboard/AttackTypeChart';
 import DeviceSecurityStatus from '../components/Dashboard/DeviceSecurityStatus';
 import MLModelPerformance from '../components/Dashboard/MLModelPerformance';
 import RecentAlerts from '../components/Dashboard/RecentAlerts';
+import ThreatTrendsChart from '../components/Dashboard/ThreatTrendsChart';
 
 const Dashboard: React.FC = () => {
   return (
@@ -54,6 +55,11 @@ const Dashboard: React.FC = () => {
       {/* Threat Map Row */}
       <div>
         <ThreatMap />
+      </div>
+      
+      {/* Threat Trends Chart */}
+      <div>
+        <ThreatTrendsChart />
       </div>
       
       {/* Three Column Row */}
