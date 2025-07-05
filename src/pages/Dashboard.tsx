@@ -12,6 +12,7 @@ import DeviceSecurityStatus from '../components/Dashboard/DeviceSecurityStatus';
 import MLModelPerformance from '../components/Dashboard/MLModelPerformance';
 import RecentAlerts from '../components/Dashboard/RecentAlerts';
 import ThreatTrendsChart from '../components/Dashboard/ThreatTrendsChart';
+import AllThreatsChart from '../components/Dashboard/AllThreatsChart';
 
 const Dashboard: React.FC = () => {
   return (
@@ -52,14 +53,15 @@ const Dashboard: React.FC = () => {
         />
       </div>
       
+      {/* Charts Row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <AllThreatsChart />
+        <ThreatTrendsChart />
+      </div>
+      
       {/* Threat Map Row */}
       <div>
         <ThreatMap />
-      </div>
-      
-      {/* Threat Trends Chart */}
-      <div>
-        <ThreatTrendsChart />
       </div>
       
       {/* Three Column Row */}

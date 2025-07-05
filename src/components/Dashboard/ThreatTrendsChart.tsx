@@ -43,75 +43,100 @@ const ThreatTrendsChart: React.FC = () => {
       </div>
       
       {/* Chart */}
-      <div className="h-64 flex items-end justify-between gap-2 mb-4">
+      <div className="h-64 flex items-end justify-between gap-3 mb-4 bg-gray-700/30 rounded-lg p-4">
         {threatData.map((day, index) => {
           const total = day.phishing + day.malware + day.ddos + day.dataTheft + day.botnet;
-          const heightPercentage = (total / maxValue) * 100;
+          const heightPercentage = total > 0 ? (total / maxValue) * 100 : 5;
           
           return (
-            <div key={index} className="flex-1 flex flex-col items-center">
+            <div key={index} className="flex-1 flex flex-col items-center group relative">
               <div 
-                className="w-full bg-gray-700 rounded-t relative overflow-hidden"
-                style={{ height: `${Math.max(heightPercentage, 5)}%` }}
+                className="w-full bg-gray-600 rounded-t relative overflow-hidden transition-all duration-300 hover:scale-105 cursor-pointer"
+                style={{ height: `${Math.max(heightPercentage, 10)}%`, minHeight: '20px' }}
               >
-                {/* Stacked bars */}
-                <div className="absolute bottom-0 w-full">
-                  <div 
-                    className="bg-red-500 w-full"
-                    style={{ height: `${(day.phishing / total) * 100}%` }}
-                  ></div>
-                  <div 
-                    className="bg-orange-500 w-full"
-                    style={{ height: `${(day.malware / total) * 100}%` }}
-                  ></div>
-                  <div 
-                    className="bg-yellow-500 w-full"
-                    style={{ height: `${(day.ddos / total) * 100}%` }}
-                  ></div>
-                  <div 
-                    className="bg-purple-500 w-full"
-                    style={{ height: `${(day.dataTheft / total) * 100}%` }}
-                  ></div>
-                  <div 
-                    className="bg-pink-500 w-full"
-                    style={{ height: `${(day.botnet / total) * 100}%` }}
-                  ></div>
+                {/* Stacked bars with proper proportions */}
+                <div className="absolute bottom-0 w-full flex flex-col">
+                  {day.phishing > 0 && (
+                    <div 
+                      className="bg-red-500 w-full transition-all duration-300"
+                      style={{ height: `${(day.phishing / total) * 100}%` }}
+                      title={`Phishing: ${day.phishing}`}
+                    ></div>
+                  )}
+                  {day.malware > 0 && (
+                    <div 
+                      className="bg-orange-500 w-full transition-all duration-300"
+                      style={{ height: `${(day.malware / total) * 100}%` }}
+                      title={`Malware: ${day.malware}`}
+                    ></div>
+                  )}
+                  {day.ddos > 0 && (
+                    <div 
+                      className="bg-yellow-500 w-full transition-all duration-300"
+                      style={{ height: `${(day.ddos / total) * 100}%` }}
+                      title={`DDoS: ${day.ddos}`}
+                    ></div>
+                  )}
+                  {day.dataTheft > 0 && (
+                    <div 
+                      className="bg-purple-500 w-full transition-all duration-300"
+                      style={{ height: `${(day.dataTheft / total) * 100}%` }}
+                      title={`Data Theft: ${day.dataTheft}`}
+                    ></div>
+                  )}
+                  {day.botnet > 0 && (
+                    <div 
+                      className="bg-pink-500 w-full transition-all duration-300"
+                      style={{ height: `${(day.botnet / total) * 100}%` }}
+                      title={`Botnet: ${day.botnet}`}
+                    ></div>
+                  )}
                 </div>
                 
                 {/* Hover tooltip */}
-                <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-xs px-2 py-1 rounded opacity-0 hover:opacity-100 transition-opacity whitespace-nowrap">
-                  {total} threats
+                <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-xs px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 border border-gray-600">
+                  <div className="text-center">
+                    <div className="font-semibold text-white">{day.date}</div>
+                    <div className="text-gray-300">Total: {total}</div>
+                    <div className="mt-1 space-y-1">
+                      {day.phishing > 0 && <div className="text-red-400">Phishing: {day.phishing}</div>}
+                      {day.malware > 0 && <div className="text-orange-400">Malware: {day.malware}</div>}
+                      {day.ddos > 0 && <div className="text-yellow-400">DDoS: {day.ddos}</div>}
+                      {day.dataTheft > 0 && <div className="text-purple-400">Data Theft: {day.dataTheft}</div>}
+                      {day.botnet > 0 && <div className="text-pink-400">Botnet: {day.botnet}</div>}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <span className="text-xs text-gray-400 mt-2">{day.date}</span>
+              <span className="text-xs text-gray-400 mt-2 font-medium">{day.date}</span>
             </div>
           );
         })}
       </div>
       
       {/* Legend */}
-      <div className="flex flex-wrap gap-4 text-xs">
+      <div className="flex flex-wrap gap-4 text-xs mb-4">
         {threatTypes.map((type) => (
-          <div key={type.key} className="flex items-center gap-1">
+          <div key={type.key} className="flex items-center gap-2">
             <div className={`w-3 h-3 rounded ${type.color}`}></div>
-            <span>{type.label}</span>
+            <span className="text-gray-300">{type.label}</span>
           </div>
         ))}
       </div>
       
       {/* Summary */}
-      <div className="mt-4 pt-4 border-t border-gray-700 grid grid-cols-2 gap-4 text-sm">
-        <div>
+      <div className="pt-4 border-t border-gray-700 grid grid-cols-2 gap-4 text-sm">
+        <div className="bg-gray-700/50 rounded-lg p-3">
           <span className="text-gray-400">Total This Week:</span>
-          <span className="ml-2 font-semibold">
+          <span className="ml-2 font-semibold text-white text-lg">
             {threatData.reduce((sum, day) => 
               sum + day.phishing + day.malware + day.ddos + day.dataTheft + day.botnet, 0
             )}
           </span>
         </div>
-        <div>
-          <span className="text-gray-400">Avg Per Day:</span>
-          <span className="ml-2 font-semibold">
+        <div className="bg-gray-700/50 rounded-lg p-3">
+          <span className="text-gray-400">Daily Average:</span>
+          <span className="ml-2 font-semibold text-white text-lg">
             {Math.round(threatData.reduce((sum, day) => 
               sum + day.phishing + day.malware + day.ddos + day.dataTheft + day.botnet, 0
             ) / 7)}
